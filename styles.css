@@ -10,12 +10,16 @@
   --shadow:rgba(0,0,0,.35);
 
   --body-font:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-  --letter-spacing:0.2px;
+
+  /* Spacing defaults (dark mode) */
+  --letter-spacing-body:0.2px;
+  --letter-spacing-title:0.2px;
 }
 
 /* Light mode overrides */
 body.light{
   color-scheme: light;
+
   --bg:#ffffff;
   --text:#1612d3;
   --muted:#1612d3;
@@ -24,8 +28,10 @@ body.light{
   --shadow:rgba(0,0,0,.08);
 
   --body-font:"Times New Roman", Times, serif;
-  /* NOTE: -72 would overlap characters heavily; using -0.72px as the likely intent */
-  --letter-spacing:-0.72px;
+
+  /* Your updated spacing request */
+  --letter-spacing-title:-0.72px;
+  --letter-spacing-body:-0.62px;
 }
 
 *{ box-sizing:border-box; }
@@ -38,7 +44,7 @@ body{
   background:var(--bg);
   color:var(--text);
   font-family:var(--body-font);
-  letter-spacing:var(--letter-spacing);
+  letter-spacing:var(--letter-spacing-body);
   transition: background .35s ease, color .35s ease;
 }
 
@@ -58,15 +64,20 @@ h1{
   margin:0;
   font-weight:650;
   font-size:clamp(28px,4vw,44px);
-  letter-spacing:0.2px; /* keep headline readable even in light mode */
+  letter-spacing: var(--letter-spacing-title);
 }
 
 .theme-toggle{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+
   background:transparent;
   border:1px solid var(--border);
   color:var(--text);
-  padding:8px 12px;
-  border-radius:10px;
+  padding:8px 10px 8px 12px;
+  border-radius:999px;
+
   font-size:14px;
   cursor:pointer;
   transition: background .25s ease, border-color .25s ease, transform .15s ease;
@@ -79,6 +90,41 @@ h1{
 
 .theme-toggle:active{
   transform: translateY(1px);
+}
+
+.theme-toggle__label{
+  line-height:1;
+}
+
+/* The little slider */
+.theme-toggle__switch{
+  width:42px;
+  height:22px;
+  border-radius:999px;
+  border:1px solid var(--border);
+  background:rgba(255,255,255,.02);
+  position:relative;
+  flex:0 0 auto;
+  transition: background .25s ease, border-color .25s ease;
+}
+
+/* Knob */
+.theme-toggle__knob{
+  width:18px;
+  height:18px;
+  border-radius:999px;
+  background:var(--text);
+  position:absolute;
+  top:50%;
+  left:2px;
+  transform: translateY(-50%);
+  transition: transform .25s ease, background .25s ease;
+  opacity:.92;
+}
+
+/* When in light mode, slide knob right */
+body.light .theme-toggle__knob{
+  transform: translate(20px, -50%);
 }
 
 .terminal{
