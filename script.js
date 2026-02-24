@@ -1,63 +1,63 @@
-// ----- Typewriter -----
-const typedEl = document.getElementById("typed");
+document.addEventListener("DOMContentLoaded", () => {
+  console.log("script.js loaded ✅");
 
-const lines = [
-  "Documentary films",
-  "Environmental stories",
-  "Photo essays from the field",
-  "Experiments in code"
-];
+  // ----- Theme toggle + persistence -----
+  const toggleBtn = document.getElementById("themeToggle");
 
-const promptText = "> ";
+  const setTheme = (theme) => {
+    document.body.classList.toggle("light", theme === "light");
+    localStorage.setItem("theme", theme);
 
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+    // Optional: make it obvious it's working
+    if (toggleBtn) toggleBtn.textContent = theme === "light" ? "Dark mode" : "Light mode";
+  };
 
-async function typeText(text, baseSpeed = 18) {
-  for (const ch of text) {
-    typedEl.textContent += ch;
-    await sleep(baseSpeed + Math.random() * 18);
+  // Init theme (default dark)
+  const saved = localStorage.getItem("theme");
+  setTheme(saved === "light" ? "light" : "dark");
+
+  if (toggleBtn) {
+    toggleBtn.addEventListener("click", () => {
+      const isLight = document.body.classList.contains("light");
+      setTheme(isLight ? "dark" : "light");
+    });
+  } else {
+    console.warn("themeToggle button not found ❌");
   }
-}
 
-async function runTypewriter() {
-  if (!typedEl) return;
+  // ----- Typewriter -----
+  const typedEl = document.getElementById("typed");
+  if (!typedEl) {
+    console.warn("typed element not found ❌");
+    return;
+  }
 
-  typedEl.textContent = "";
+  const lines = [
+    "Documentary films",
+    "Environmental stories",
+    "Photo essays from the field",
+    "Experiments in code"
+  ];
 
-  for (let i = 0; i < lines.length; i++) {
-    await typeText(promptText, 8);
-    await typeText(lines[i], 16);
+  const promptText = "> ";
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-    if (i < lines.length - 1) {
-      typedEl.textContent += "\n";
-      await sleep(180);
+  async function typeText(text, baseSpeed = 18) {
+    for (const ch of text) {
+      typedEl.textContent += ch;
+      await sleep(baseSpeed + Math.random() * 18);
     }
   }
-}
 
-runTypewriter();
-
-// ----- Theme toggle + persistence -----
-const toggleBtn = document.getElementById("themeToggle");
-
-function applyTheme(theme) {
-  if (theme === "light") document.body.classList.add("light");
-  else document.body.classList.remove("light");
-}
-
-(function initTheme() {
-  const saved = localStorage.getItem("theme");
-  if (saved === "light" || saved === "dark") {
-    applyTheme(saved);
-  } else {
-    // default to dark (your current vibe)
-    applyTheme("dark");
-  }
-})();
-
-if (toggleBtn) {
-  toggleBtn.addEventListener("click", () => {
-    const isLight = document.body.classList.toggle("light");
-    localStorage.setItem("theme", isLight ? "light" : "dark");
-  });
-}
+  (async function runTypewriter() {
+    typedEl.textContent = "";
+    for (let i = 0; i < lines.length; i++) {
+      await typeText(promptText, 8);
+      await typeText(lines[i], 16);
+      if (i < lines.length - 1) {
+        typedEl.textContent += "\n";
+        await sleep(180);
+      }
+    }
+  })();
+});
