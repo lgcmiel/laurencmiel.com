@@ -1,29 +1,28 @@
 document.addEventListener("DOMContentLoaded", () => {
   console.log("script.js loaded ✅");
 
-  // ----- Theme toggle + persistence -----
-  const toggleBtn = document.getElementById("themeToggle");
+   // ----- Theme toggle + persistence -----
+const toggleBtn = document.getElementById("themeToggle");
+const labelEl = document.getElementById("themeLabel");
 
-  const setTheme = (theme) => {
-    document.body.classList.toggle("light", theme === "light");
-    localStorage.setItem("theme", theme);
+const setTheme = (theme) => {
+  document.body.classList.toggle("light", theme === "light");
+  localStorage.setItem("theme", theme);
 
-    // Optional: make it obvious it's working
-    if (toggleBtn) toggleBtn.textContent = theme === "light" ? "Dark mode" : "Light mode";
-  };
+  // Button label reflects current theme
+  if (labelEl) labelEl.textContent = theme === "light" ? "Light mode" : "Dark mode";
+};
 
-  // Init theme (default dark)
-  const saved = localStorage.getItem("theme");
-  setTheme(saved === "light" ? "light" : "dark");
+// Init theme (default dark)
+const saved = localStorage.getItem("theme");
+setTheme(saved === "light" ? "light" : "dark");
 
-  if (toggleBtn) {
-    toggleBtn.addEventListener("click", () => {
-      const isLight = document.body.classList.contains("light");
-      setTheme(isLight ? "dark" : "light");
-    });
-  } else {
-    console.warn("themeToggle button not found ❌");
-  }
+if (toggleBtn) {
+  toggleBtn.addEventListener("click", () => {
+    const isLight = document.body.classList.contains("light");
+    setTheme(isLight ? "dark" : "light");
+  });
+}
 
   // ----- Typewriter -----
   const typedEl = document.getElementById("typed");
