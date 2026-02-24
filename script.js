@@ -1,4 +1,6 @@
-// Typewriter for the "code box" list
+// ----- Typewriter -----
+const typedEl = document.getElementById("typed");
+
 const lines = [
   "Documentary films",
   "Environmental stories",
@@ -6,33 +8,56 @@ const lines = [
   "Experiments in code"
 ];
 
-const typedEl = document.getElementById("typed");
+const promptText = "> ";
 
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-async function typeLine(line, speed = 22) {
-  for (let i = 0; i < line.length; i++) {
-    typedEl.textContent += line[i];
-    await sleep(speed + Math.random() * 18);
+async function typeText(text, baseSpeed = 18) {
+  for (const ch of text) {
+    typedEl.textContent += ch;
+    await sleep(baseSpeed + Math.random() * 18);
   }
 }
 
-async function run() {
+async function runTypewriter() {
+  if (!typedEl) return;
+
   typedEl.textContent = "";
 
-  // Small “terminal prompt” vibe
-  typedEl.textContent += "> ";
-  await sleep(250);
-
   for (let i = 0; i < lines.length; i++) {
-    await typeLine(lines[i]);
+    await typeText(promptText, 8);
+    await typeText(lines[i], 16);
+
     if (i < lines.length - 1) {
-      typedEl.textContent += "\n> ";
-      await sleep(260);
+      typedEl.textContent += "\n";
+      await sleep(180);
     }
   }
 }
 
-run();
+runTypewriter();
+
+// ----- Theme toggle + persistence -----
+const toggleBtn = document.getElementById("themeToggle");
+
+function applyTheme(theme) {
+  if (theme === "light") document.body.classList.add("light");
+  else document.body.classList.remove("light");
+}
+
+(function initTheme() {
+  const saved = localStorage.getItem("theme");
+  if (saved === "light" || saved === "dark") {
+    applyTheme(saved);
+  } else {
+    // default to dark (your current vibe)
+    applyTheme("dark");
+  }
+})();
+
+if (toggleBtn) {
+  toggleBtn.addEventListener("click", () => {
+    const isLight = document.body.classList.toggle("light");
+    localStorage.setItem("theme", isLight ? "light" : "dark");
+  });
+}
