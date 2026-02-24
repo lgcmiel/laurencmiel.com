@@ -9,11 +9,11 @@ const setTheme = (theme) => {
   document.body.classList.toggle("light", theme === "light");
   localStorage.setItem("theme", theme);
 
-  // Button label reflects current theme
+  // Button text reflects CURRENT theme
   if (labelEl) labelEl.textContent = theme === "light" ? "Light mode" : "Dark mode";
 };
 
-// Init theme (default dark)
+// Init
 const saved = localStorage.getItem("theme");
 setTheme(saved === "light" ? "light" : "dark");
 
