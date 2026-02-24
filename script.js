@@ -1,9 +1,9 @@
 // Typewriter for the "code box" list
 const lines = [
-  "▰ Documentary films",
-  "▰ Environmental stories",
-  "▰ Photo essays from the field",
-  "▰ Experiments in code"
+  "Documentary films",
+  "Environmental stories",
+  "Photo essays from the field",
+  "Experiments in code"
 ];
 
 const typedEl = document.getElementById("typed");
